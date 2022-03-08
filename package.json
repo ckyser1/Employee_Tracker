@@ -1,10 +1,15 @@
 {
+  "name": "assets",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "dependencies": {
-    "cfonts": "^2.10.0",
     "console.table": "^0.10.0",
     "inquirer": "^8.2.0",
-    "mysql": "^2.18.1",
-    "mysql2": "^2.3.3",
-    "path": "^0.12.7"
+    "mysql2": "^2.3.3"
   }
 }
