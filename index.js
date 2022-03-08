@@ -24,7 +24,7 @@ connection.connect(function(err) {
   });
 
 
-// LIST OF CHOICES FOR USER ___________________________
+// input choices
 
 function runEmployeeDB() {
     inquirer.prompt([
@@ -48,52 +48,42 @@ function runEmployeeDB() {
 ]).then(function(answers) {
         switch (answers.action) {
 
-            // VIEW ALL EMPLOYEES ___________________
             case "View All Employees":
                 viewAllEmployees();
             break;
 
-            // VIEW ALL DEPARTMENTS _________________
             case "View All Departments":
                 viewAllDepts();
             break;
 
-             // VIEW ALL ROLES ______________________
             case "View All Roles":
                 viewAllRoles();
             break;
                 
-            // VIEW ALL EMPLOYES BY DEPT ____________
             case "View All Employees by Department":
                 viewEmployeesByDept();
             break;
 
-            // VIEW EMPLOYEES BY ROLE ______________
             case "View All Employees by Role":
                 viewEmployeesByRole();
             break;
 
-            // ADD A DEPARTMENT ____________________
             case "Add Department":
                 addDept();
             break;
 
-            // ADD A ROLE ___________________________
             case "Add Role":
                 addRole();
             break;
 
-            // ADD EMPLOYEE _________________________
             case "Add Employee":
                 addEmployee();
             break;
 
-            // UPDATE EMPLOYEE ROLE _________________
             case "Update Employee Role":
                 updateEmployeeRole();
             break;
 
-            //EXIT ________________________
             case "Exit":
                 console.log ("===============================================");
                 console.log ("");
@@ -106,7 +96,7 @@ function runEmployeeDB() {
     })
 };
 
-// VIEW EMPLOYEES ________________________
+// view all employees
 function viewAllEmployees() {
     
     connection.query("SELECT employees.firstName AS First_Name, employees.lastName AS Last_Name, role.title AS Title, role.salary AS Salary, department.name AS Department, CONCAT(e.firstName, ' ' ,e.lastName) AS Manager FROM employees INNER JOIN role on role.id = employees.roleID INNER JOIN department on department.id = role.departmentID LEFT JOIN employees e on employees.managerID = e.id;", 
@@ -120,7 +110,7 @@ function viewAllEmployees() {
   })
 }
 
-// VIEW DEPARTMENTS ______________________
+// view all departments
 function viewAllDepts() {
     connection.query("SELECT department.id AS ID, department.name AS Department FROM department",
     function(err, res) {
@@ -133,7 +123,7 @@ function viewAllDepts() {
   })
 }
 
-// VIEW ROLES ______________________
+// view roles
 function viewAllRoles() {
     connection.query("SELECT role.id AS Dept_ID, role.title AS Title FROM role",
     function(err, res) {
@@ -146,7 +136,7 @@ function viewAllRoles() {
   })
 }
 
-// VIEW EMPLOYEES BY DEPARTMENT --------------
+// view employees by dept
 function viewEmployeesByDept() {
   connection.query("SELECT employees.firstName AS First_Name, employees.lastName AS Last_Name, department.name AS Department FROM employees JOIN role ON employees.roleID = role.id JOIN department ON role.departmentID = department.id ORDER BY department.id;", 
   function(err, res) {
@@ -159,7 +149,7 @@ function viewEmployeesByDept() {
   })
 }
 
-// VIEW EMPLOYES BY ROLE ____________________
+// view employees by role
 function viewEmployeesByRole() {
   connection.query("SELECT employees.firstName AS First_Name, employees.lastName AS Last_Name, role.title AS Title FROM employees JOIN role ON employees.roleID = role.id ORDER BY role.id", 
   function(err, res) {
@@ -172,7 +162,7 @@ function viewEmployeesByRole() {
   })
 }
 
-// ROLE ARRAY SET UP FOR EMPLOYEE ADDITION _____________________
+// view role
 let roleArr = [];                                            
 function selectRole() {
   connection.query("SELECT * FROM role", function(err, res) {
@@ -184,7 +174,7 @@ function selectRole() {
   return roleArr;
 }
 
-// MANAGER ARRAY SET UP FOR EMPLOYEE ADDITION ____________________
+// select manager
 let managersArr = [];
 function selectManager() {
   connection.query("SELECT firstName, lastName FROM employees", function(err, res) {
@@ -196,7 +186,6 @@ function selectManager() {
   return managersArr;
 }
 
-// DEPARTMENT ARRAY SET UP FOR ROLE ADDITION __________________
 var deptArr = [];
 function selectDepartment() {
   connection.query("SELECT * FROM department", function(err, res) {
@@ -209,7 +198,7 @@ return deptArr;
 }
 
 
-// ADD NEW EMPLOYEE -------------------
+// add new employee
 function addEmployee() { 
     inquirer.prompt([
         {
@@ -254,7 +243,7 @@ function addEmployee() {
 
   })
  }
-// UPDATE EMPLOYEE ROLE _______________________
+// update role
 function updateEmployeeRole() {
     connection.query("SELECT employees.lastName, role.title FROM employees JOIN role ON employees.roleID = role.id;", 
     (err, res) => {
@@ -297,7 +286,7 @@ function updateEmployeeRole() {
         });
   }
 
-// ADD DEPARTMENT _________________________
+// add dept
 function addDept() { 
 
     inquirer.prompt([
@@ -327,7 +316,7 @@ function addDept() {
     })
   }
 
-  // ADD ROLE __________________________________
+  // add role
   function addRole() { 
     connection.query("SELECT role.title AS Title, role.salary AS Salary FROM role LEFT JOIN department.name AS Department FROM department;",   function(err, res) {
       inquirer.prompt([
